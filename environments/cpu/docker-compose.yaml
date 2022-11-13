@@ -10,8 +10,11 @@ services:
         - GID=${HOST_GID-1000}
       context: ../../
       dockerfile: environments/Dockerfile
+    env_file:
+      - variables.env
     tty: true
     volumes:
         - ../../:/home/challenger/ascender
     ports:
         - 8000:8000
+        - 587:587
