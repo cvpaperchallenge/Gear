@@ -1,6 +1,6 @@
 import pytest
 
-from src.gondola.models import BaseEmail, Contact
+from src.gondola.models import BaseMail, Contact
 from src.gondola.renderer import Renderer, create_environment
 
 
@@ -33,10 +33,10 @@ def contact(name="contact"):
 
 
 @pytest.fixture
-def base_email(
+def base_mail(
     contact,
 ):
-    return BaseEmail(
+    return BaseMail(
         title="This is title",
         sender=contact(name="sender"),
         receiver=contact(name="receiver"),

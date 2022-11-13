@@ -28,22 +28,20 @@ def create_environment(
     return environment
 
 
-class _EmailRenderer:
+class _MailRenderer:
     def __init__(self, load_template: _LoadTemplate) -> None:
         self._load: Final = load_template
 
     def advent_calendar_contribution_request(
         self, parameter: models.AdventCalendarContributionRequestMail
     ) -> str:
-        template_file: Final = "advent_calendar_contribution_request.jinja2"
+        template_file: Final = "advent_calendar_contribution_request_2022.jinja2"
         return self._load(template_file).render(
             sender=parameter.mail.sender.display_name,
             receiver=parameter.mail.receiver.display_name,
             cc_receivers=[
                 cc_receiver.display_name for cc_receiver in parameter.mail.cc_receivers
             ],
-            title=parameter.title,
-            abstract=parameter.abstract,
             expected_content=parameter.expected_content,
         )
 
@@ -53,7 +51,7 @@ class Renderer:
 
     def __init__(self, environment: jinja2.Environment) -> None:
         self._environment: Final = environment
-        self.email: Final = _EmailRenderer(self._load)
+        self.mail: Final = _MailRenderer(self._load)
 
     def _load(self, name: str) -> jinja2.Template:
         return self._environment.get_template(name)

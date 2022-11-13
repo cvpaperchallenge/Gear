@@ -3,33 +3,27 @@ import pytest
 from src.gondola.models import AdventCalendarContributionRequestMail
 
 
-class Test_EmailRenderer:
+class Test_MailRenderer:
     @pytest.fixture
-    def email_renderer(self, renderer):
-        return renderer.email
+    def mail_renderer(self, renderer):
+        return renderer.mail
 
     def test_advent_calendar_contribution_request(
         self,
-        email_renderer,
-        base_email,
+        mail_renderer,
+        base_mail,
         multiple_lines_text,
     ):
-        mock_title = "This is title of advent calender"
-        mock_abstract = multiple_lines_text("abstract")
         mock_expected_content = multiple_lines_text("expected_content")
 
-        actual = email_renderer.advent_calendar_contribution_request(
+        actual = mail_renderer.advent_calendar_contribution_request(
             AdventCalendarContributionRequestMail(
-                mail=base_email,
-                title=mock_title,
-                abstract=mock_abstract,
+                mail=base_mail,
                 expected_content=mock_expected_content,
             )
         )
 
-        assert base_email.receiver.display_name in actual
-        assert base_email.sender.display_name in actual
-        for cc_receiver in base_email.cc_receivers:
+        assert base_mail.receiver.display_name in actual
+        assert base_mail.sender.display_name in actual
+        for cc_receiver in base_mail.cc_receivers:
             assert cc_receiver.display_name in actual
-        assert mock_title in actual
-        assert mock_abstract in actual
